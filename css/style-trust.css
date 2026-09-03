@@ -1,0 +1,33 @@
+.trust-strip {
+  display: flex;
+  justify-content: space-between;
+  padding: 32px 40px;
+  border-top: 1px solid #8c2f39;
+  border-bottom: 1px solid #8c2f39  ;
+  }
+
+  .trust-icon,.trust-item,.trust-title,.trust-sub {
+    margin-left: 20px;
+  }
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+}
+
+.trust-icon {
+  font-size: 1.6rem;
+}
+
+.trust-title {
+  font-size: 0.8rem;
+  font-weight: bold;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+
+.trust-sub {
+  font-size: 0.78rem;
+  color: #999999;
+}
