@@ -1,0 +1,93 @@
+.buy-now-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+
+.buy-now-overlay.active {
+  display: flex;
+}
+
+.buy-now-modal {
+  position: relative;
+  background-color: #141414;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 32px;
+  max-width: 360px;
+  width: 90%;
+  text-align: center;
+}
+
+.buy-now-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: #999999;
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.buy-now-close:hover {
+  color: #ffffff;
+}
+
+.buy-now-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.buy-now-modal h3 {
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.buy-now-qty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.buy-now-qty button {
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: 1px solid #2a2a2a;
+  color: #ffffff;
+  font-size: 1.1rem;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.buy-now-qty input {
+  width: 50px;
+  text-align: center;
+  background-color: #0d0d0d;
+  border: 1px solid #2a2a2a;
+  color: #ffffff;
+  padding: 8px;
+  border-radius: 4px;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.buy-now-qty input::-webkit-outer-spin-button,
+.buy-now-qty input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

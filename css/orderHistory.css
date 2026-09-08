@@ -1,0 +1,43 @@
+.order-history-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 0;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.order-history-total {
+  color: #8c2f39;
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+
+.order-status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.order-status-pending {
+  background-color: rgba(201, 162, 39, 0.18);
+  color: #d9b84a;
+}
+
+.order-status-shipped {
+  background-color: rgba(92, 140, 87, 0.18);
+  color: #8fc98a;
+}
+
+.order-status-delivered {
+  background-color: rgba(92, 140, 87, 0.28);
+  color: #8fc98a;
+}
+
+.order-status-cancelled {
+  background-color: rgba(192, 57, 43, 0.18);
+  color: #e08080;
+}

@@ -31,6 +31,7 @@
 .nav-brand {
   font-size: 1.8rem;
   font-weight: bold;
+  margin-left: 20px;
 }
 
 .nav-brand a{
@@ -41,7 +42,7 @@
   height: 100px;
   width: auto;
   display: block;
-  margin-left: 50%;
+ 
 }
 .nav-links {
   display: flex;
@@ -55,6 +56,8 @@
   letter-spacing: 0.03em;
 }
 
+
+
 .nav-links a:hover {
   color: #8c2f39;
 }
@@ -62,7 +65,18 @@
 .nav-icons {
   display: flex;
   align-items: center;
-  gap: 40px;
+  gap:30px;
+}
+
+
+.nav-icons a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.1rem;
+}
+
+.nav-icons a:visited {
+  color: #ffffff;
 }
 
 .nav-icons button {
@@ -71,4 +85,58 @@
   color: #ffffff;
   font-size: 1.1rem;
   cursor: pointer;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+/* Style the icon button */
+.icon-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 8px;
+  color:#ffffff;
+}
+
+/* Hide the form by default */
+.search-form {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background-color: #141414;
+  border: 1px solid #2a2a2a;
+  border-radius: 4px;
+  padding: 8px;
+  z-index: 50;
+}
+
+.search-container.active .search-form {
+  display: flex;
+}
+
+.search-form input {
+  background: none;
+  border: none;
+  color: #ffffff;
+  padding: 8px;
+  width: 200px;
+}
+
+.search-form input:focus {
+  outline: none;
+}
+
+.search-form .submit-btn {
+  background: none;
+  border: none;
+  color: #8c2f39;
+  cursor: pointer;
+  padding: 0 8px;
 }

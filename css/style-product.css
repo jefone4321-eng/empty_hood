@@ -123,17 +123,11 @@
 }
 
 .add-to-cart-btn {
+  white-space: nowrap;
+  font-size: 0.78rem;
+  padding: 10px 6px;
   width: 100%;
-  margin-top: 12px;
-  background: none;
-  border: 1px solid #2a2a2a;
-  color:#141414;
-  padding: 10px;
-  font-size: 0.8rem;
-  letter-spacing: 0.04em;
-  cursor: pointer;
 }
-
 .add-to-cart-btn:hover {
   border-color: #8c2f39;
   background-color: #8c2f39;
@@ -220,3 +214,44 @@
   font-size: 1.1rem;
   margin-bottom: 16px;
 }
+
+.stock-badge {
+  font-size: 0.75rem;
+  margin-top: 4px;
+}
+
+.stock-badge.out {
+  color: #e08080;
+}
+
+.stock-badge.low {
+  color: orange;
+}
+
+.product-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.product-actions .qty-form,
+.product-actions form {
+  flex: 1;
+}
+
+.buy-now-btn {
+  width: 100%;
+  background-color: #8c2f39;
+  color: #ffffff;
+  border: none;
+  padding: 10px;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.buy-now-btn:hover {
+  background-color: #a3374a;
+}
+

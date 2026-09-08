@@ -85,7 +85,7 @@
   border: 1px solid #2a2a2a;
 }
 
-.newsletter-form input {
+.newsletter-form input  {
   flex: 1;
   background: none;
   border: none;
