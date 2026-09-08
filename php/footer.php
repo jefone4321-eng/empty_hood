@@ -13,11 +13,12 @@
 
   <div class="footer-col">
     <h4>SHOP</h4>
-    <a href="#">All Products</a>
-    <a href="#">Hoodies</a>
-    <a href="#">T-Shirts</a>
-    <a href="#">Headwear</a>
-    <a href="#">Accessories</a>
+    <a href="shop.php?category=All">All Products</a>
+    <a href="shop.php?category=Hoodies">Hoodies</a>
+    <a href="shop.php?category=T-Shirts">T-Shirts</a>
+    <a href="shop.php?category=Bottoms">Bottoms</a>
+    <a href="shop.php?category=Headwear">Headwear</a>
+    <a href="shop.php?category=Accessories">Accessories</a>
   </div>
 
   <div class="footer-col">
@@ -26,13 +27,13 @@
     <a href="#">Return & Exchanges</a>
     <a href="#">Size Guide</a>
     <a href="#">FAQs</a>
-    <a href="#">Contact Us</a>
+    <a href="contact.php">Contact Us</a>
   </div>
 
   <div class="footer-col">
     <h4>ABOUT</h4>
-    <a href="#about">Our Story</a>
-    <a href="#lookbook">Lookbook</a>
+    <a href="about.php">Our Story</a>
+    <a href="lookbook.php">Lookbook</a>
     <a href="#">Stockist</a>
     <a href="#">Terms & Conditions</a>
     <a href="#">Privacy Policy</a>
@@ -48,9 +49,11 @@
   </div>
 </footer>
 
-<p class="copyright">© <?php echo date("Y"); ?> empty-hood. All rights reserved.</p>
+<p class="copyright">© <?php echo date("Y"); ?> empty-hood. All rights reserved. · <a href="admin/admin_login.php"
+    class="admin-entry-link">Admin</a></p>
 
 
 <script src="../js/app.js"></script>
 </body>
-</html>                                  
+
+</html>

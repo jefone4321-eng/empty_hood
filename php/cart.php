@@ -1,22 +1,23 @@
 <?php
-  session_start();
-  $cartCount = array_sum($_SESSION['cart'] ?? []);
-  include 'header.php';
-  include 'data.php';
+session_start();
+$cartCount = array_sum($_SESSION['cart'] ?? []);
+include 'header.php';
+include 'data.php';
 
-  // Helper: find a product by its id
-  function findProduct($products, $id) {
-    foreach ($products as $product) {
-      if ($product['id'] === $id) {
-        return $product;
-      }
+// Helper: find a product by its id
+function findProduct($products, $id)
+{
+  foreach ($products as $product) {
+    if ($product['id'] === $id) {
+      return $product;
     }
-    return null;
   }
+  return null;
+}
 
-  $cartItems = $_SESSION['cart'] ?? [];
- 
-  $subtotal = 0;
+$cartItems = $_SESSION['cart'] ?? [];
+
+$subtotal = 0;
 ?>
 
 <section class="shop-page">
@@ -30,36 +31,34 @@
         <?php $product = findProduct($products, $id); ?>
         <?php if ($product): ?>
           <?php
-            $priceNumber = (float) str_replace(["₱", ","], "", $product['price']);
-            $lineTotal = $priceNumber * $qty;
-            $subtotal += $lineTotal;
+          $priceNumber = (float) str_replace(["₱", ","], "", $product['price']);
+          $lineTotal = $priceNumber * $qty;
+          $subtotal += $lineTotal;
           ?>
-          <div class="cart-row">
+          <div class="cart-row" data-id="<?php echo $id; ?>">
             <img src="<?php echo $product['images']; ?>" alt="<?php echo $product['name']; ?>">
             <div class="cart-row-info">
               <h3><?php echo $product['name']; ?></h3>
               <p class="product-price">₱<?php echo number_format($priceNumber, 2); ?></p>
             </div>
             <div class="cart-qty">
-              <form method="post" action="create_cart.php">
+              <form method="post" action="create_cart.php" class="qty-form">
                 <input type="hidden" name="id" value="<?php echo $id; ?>">
                 <input type="hidden" name="action" value="decrease">
-                <input type="hidden" name="redirect" value="cart.php">
                 <button type="submit">−</button>
               </form>
-              <span><?php echo $qty; ?></span>
-              <form method="post" action="create_cart.php">
+              <span class="qty-value"><?php echo $qty; ?></span>
+              <form method="post" action="create_cart.php" class="qty-form">
                 <input type="hidden" name="id" value="<?php echo $id; ?>">
                 <input type="hidden" name="action" value="increase">
-                <input type="hidden" name="redirect" value="cart.php">
                 <button type="submit">+</button>
               </form>
             </div>
-            <p class="cart-row-total">₱<?php echo number_format($lineTotal, 2); ?></p>
-            <form method="post" action="create_cart.php">
+            <p class="cart-row-total" data-price="<?php echo $priceNumber; ?>">₱<?php echo number_format($lineTotal, 2); ?>
+            </p>
+            <form method="post" action="create_cart.php" class="qty-form remove-form">
               <input type="hidden" name="id" value="<?php echo $id; ?>">
               <input type="hidden" name="action" value="remove">
-              <input type="hidden" name="redirect" value="cart.php">
               <button type="submit" class="cart-remove">Remove</button>
             </form>
           </div>
@@ -68,8 +67,8 @@
     </div>
 
     <div class="cart-summary">
-      <p>Subtotal: <strong>₱<?php echo number_format($subtotal, 2); ?></strong></p>
-      <button class="btn-primary">CHECKOUT →</button>
+      <p>Subtotal: <strong id="cartSubtotal">₱<?php echo number_format($subtotal, 2); ?></strong></p>
+      <button class="btn-primary" onclick="window.location.href='checkout.php'">CHECKOUT →</button>
     </div>
   <?php endif; ?>
 </section>

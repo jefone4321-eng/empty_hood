@@ -1,44 +1,33 @@
 <?php
   session_start();
-  require '../database/config.php';
+  require_once '../database/config.php';
+  require_once 'validation.php';
 
   $errors = [];
 
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = trim($_POST['email'] ?? '');
-    $password = $_POST['password'] ?? '';
+    $result = validateLoginInput($_POST);
+    $errors = $result['errors'];
+    $data = $result['data'];
 
-    if ($email === '') {
-      $errors['email'] = "Email is required.";
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $errors['email'] = "Enter a valid email address.";
-    }
+  if(empty($errors)) {
+    $pdo = getConnection();
+    $stmt = $pdo->prepare("SELECT id, name, password FROM  accounts WHERE email = ?");
+    $stmt->execute([$data['email']]);
+    $user = $stmt->fetch();
 
-    if ($password === '') {
-      $errors['password'] = "Password is required.";
-    }
-
-    if (empty($errors)) {
-      $pdo = getConnection();
-      $stmt = $pdo->prepare("SELECT id, name, password FROM accounts WHERE email = ?");
-      $stmt->execute([$email]);
-      $user = $stmt->fetch();
-
-      if (!$user) {
-        // No account exists with this email at all
-        $errors['email'] = 'You don\'t have an account yet. <a href="signup.php">Sign up here</a>.';
-      } elseif (!password_verify($password, $user['password'])) {
-        // Account exists, but password is wrong
-        $errors['password'] = "Incorrect password.";
-      } else {
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['user_name'] = $user['name'];
-        header("Location: index.php");
-        exit;
-      }
-    }
+    if(!$user) {
+      $errors['email'] = " You don't have an account yet. <a href='signup.php'>Sign up</a>.";
+  } elseif (!password_verify($data['password'], $user['password'])) {
+    $errors['password'] = "Incorrect password.";
+  } else {
+    $_SESSION['user_id'] = $user['id'];
+    $_SESSION['user_name'] = $user['name'];
+    header("Location: index.php");
+    exit;
   }
-
+}
+  }
   $cartCount = array_sum($_SESSION['cart'] ?? []);
   $navStyle = "";
   include 'header.php';
@@ -72,9 +61,14 @@
 
         <label>
           Password
-          <input type="password" name="password"
+          <div class="password-wrapper">
+          <input type="password" name="password" id="password"
                  class="<?php echo isset($errors['password']) ? 'has-error' : ''; ?>"
                  placeholder="Your password">
+                <button type="button" class="toggle-password" data-target="password">
+                  <i class="fa-solid fa-eye"></i>
+                  </button>
+          </div> 
           <?php if (isset($errors['password'])): ?>
             <span class="field-error"><?php echo $errors['password']; ?></span>
           <?php endif; ?>
@@ -88,4 +82,4 @@
   </div>
 </section>
 
-<?php include 'footer.php'; ?>
+<?php include 'footer.php'; ?>  

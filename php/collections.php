@@ -1,14 +1,14 @@
 <?php
-  $cartCount = 0;
-  $navStyle = "";
-  include 'header.php';
-  include 'data.php';
+$cartCount = 0;
+$navStyle = "";
+include 'header.php';
+include 'data.php';
 
-  // Group products by their collection name
-  $grouped = [];
-  foreach ($products as $product) {
-    $grouped[$product['collection']][] = $product;
-  }
+// Group products by their collection name
+$grouped = [];
+foreach ($products as $product) {
+  $grouped[$product['collection']][] = $product;
+}
 ?>
 
 <section class="shop-page">
@@ -27,8 +27,8 @@
             <h3><?php echo $product['name']; ?></h3>
             <p class="product-price"><?php echo $product['price']; ?></p>
             <form method="post" action="create_cart.php">
-            <input type="hidden" name="redirect" value="shop.php">
-             <button type="submit" class="add-to-cart-btn">Go to Shop</button>
+              <input type="hidden" name="redirect" value="shop.php">
+             <a href="shop.php" class="add-to-cart-btn">Go to Shop</a>
             </form>
           </article>
         <?php endforeach; ?>

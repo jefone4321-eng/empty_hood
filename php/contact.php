@@ -1,5 +1,7 @@
 <?php
   session_start();
+  require_once 'validation.php';
+
   $cartCount = array_sum($_SESSION['cart'] ?? []);
   $navStyle = "";
   include 'header.php';
@@ -8,28 +10,13 @@
   $success = false;
 
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = trim($_POST['name'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $message = trim($_POST['message'] ?? '');
+     $result = validateContactInput($_POST);
+     $errors = $result['errors'];
 
-    if ($name === '') {
-      $errors['name'] = "Name is required.";
-    }
+     if(empty($errors)) {
 
-    if ($email === '') {
-      $errors['email'] = "Email is required.";
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $errors['email'] = "Enter a valid email address.";
-    }
-
-    if ($message === '') {
-      $errors['message'] = "Message is required.";
-    }
-
-    if (empty($errors)) {
-      // No database/email setup yet — for now we just confirm receipt.
-      $success = true;
-    }
+    $success = true;
+     }
   }
 ?>
 
