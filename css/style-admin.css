@@ -423,13 +423,13 @@
 
 /* ===== Dashboard cards ===== */
 .admin-cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 20px;
-  margin-top: 28px;
 }
 
 .admin-card {
+  flex: 1 1 280px;
   background-color: #141414;
   border: 1px solid #232323;
   border-radius: 8px;
@@ -473,7 +473,7 @@
 /* ===== Stat strip (optional, for dashboard numbers) ===== */
 .admin-stats {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 20px;
   margin-bottom: 28px;
 }

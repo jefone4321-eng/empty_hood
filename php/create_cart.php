@@ -24,6 +24,15 @@ if ($id) {
       }
       break;
 
+      case 'add_multiple':
+    $quantity = max(1, (int) ($_POST['quantity'] ?? 1));
+    $currentQty = $_SESSION['cart'][$id] ?? 0;
+
+    if ($currentQty + $quantity <= $availableStock) {
+        $_SESSION['cart'][$id] = $currentQty + $quantity;
+    }
+    break;
+
     case 'buy_now':
       
       $quantity = max(1, (int) ($_POST['quantity'] ?? 1));

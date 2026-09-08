@@ -243,3 +243,9 @@ a.add-to-cart-btn {
   }
 }
 
+@media (max-width: 768px) {
+  body {
+    padding-right: 0;
+    padding-bottom: 70px; /* room for the bottom bar instead */
+  }
+}

@@ -1,9 +1,12 @@
 <?php
-  include 'admin_header.php';
+include 'admin_header.php';
 
-  $productCount = $pdo->query("SELECT COUNT(*) FROM products")->fetchColumn();
-  $customerCount = $pdo->query("SELECT COUNT(*) FROM accounts")->fetchColumn();
-  $reviewCount = $pdo->query("SELECT COUNT(*) FROM reviews")->fetchColumn();
+$productCount = $pdo->query("SELECT COUNT(*) FROM products")->fetchColumn();
+$customerCount = $pdo->query("SELECT COUNT(*) FROM accounts")->fetchColumn();
+$reviewCount = $pdo->query("SELECT COUNT(*) FROM reviews")->fetchColumn();
+$inventoryCount = $pdo->query("SELECT SUM(stock) FROM products")->fetchColumn() ?? 0;
+$totalRevenue = $pdo->query("SELECT SUM(total) FROM orders")->fetchColumn() ?? 0;
+$totalSales = $pdo->query("SELECT SUM(total) FROM orders WHERE status != 'Cancelled'")->fetchColumn() ?? 0;
 ?>
 
 <h1>Dashboard</h1>
@@ -21,6 +24,14 @@
     <div class="admin-stat">
         <div class="admin-stat-value"><?php echo $reviewCount; ?></div>
         <div class="admin-stat-label">Total Reviews</div>
+    </div>
+    <div class="admin-stat">
+        <div class="admin-stat-value"><?php echo $inventoryCount; ?></div>
+        <div class="admin-stat-label">Total Inventory</div>
+    </div>
+    <div class="admin-stat">
+        <div class="admin-stat-value">₱<?php echo number_format($totalSales, 2); ?></div>
+        <div class="admin-stat-label">Total Sales</div>
     </div>
 </div>
 
@@ -40,8 +51,16 @@
         <h2>Reviews</h2>
         <p>Moderate customer reviews</p>
     </a>
-
-    
+    <a href="inventory.php" class="admin-card">
+        <div class="admin-card-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
+        <h2>Inventory</h2>
+        <p>Update stock levels for each product</p>
+    </a>
+    <a href="orders.php" class="admin-card">
+        <div class="admin-card-icon"><i class="fa-solid fa-chart-line"></i></div>
+        <h2>Sales Report</h2>
+        <p>View orders, revenue, and manage order status</p>
+    </a>
 </div>
 
 <?php include 'admin_footer.php'; ?>

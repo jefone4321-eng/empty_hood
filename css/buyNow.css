@@ -91,3 +91,37 @@
   -webkit-appearance: none;
   margin: 0;
 }
+
+.gcash-payment {
+  text-align: center;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.gcash-icon {
+  font-size: 2.5rem;
+  color: #0072ce;
+  margin-bottom: 16px;
+}
+
+.gcash-qr {
+  width: 220px;
+  height: 220px;
+  object-fit: contain;
+  background-color: #ffffff;
+  padding: 16px;
+  border-radius: 8px;
+  margin: 20px auto;
+}
+
+.gcash-amount {
+  font-size: 1.1rem;
+  margin-bottom: 24px;
+}
+
+.gcash-note {
+  color: #666666;
+  font-size: 0.78rem;
+  margin-top: 16px;
+}

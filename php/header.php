@@ -1,3 +1,5 @@
+<?php require_once __DIR__ . '/auth_check.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -23,44 +25,49 @@
     <link rel="stylesheet" href="../css/style-admin.css">
     <link rel="stylesheet" href="../css/checkout.css">
     <link rel="stylesheet" href="../css/buyNow.css">
+    <link rel="stylesheet" href="../css/orderHistory.css">
     <link rel="stylesheet" href="../fontawesome/css/all.min.css">
     <link rel="stylesheet" href="https://cloudfare.com">
 </head>
 
 <body class="<?php echo $bodyClass ?? ''; ?>">
 
-    <header class="nav <?php echo $navStyle ?? ''; ?>">
-        <div class="nav-brand">
-            <a href="index.php"><img src="../images/hLogo.svg"></a>
-        </div>
-        <nav class="nav-links">
-            <a href="index.php">Home</a>
-            <a href="shop.php">Shop</a>
-            <a href="collections.php">Collections</a>
-            <a href="about.php">About</a>
-            <a href="lookbook.php">Lookbook</a>
-            <a href="contact.php">Contact</a>
-        </nav>
+   <header class="nav <?php echo $navStyle ?? ''; ?>">
+    <div class="nav-brand">
+        <a href="index.php"><img src="../images/hLogo.svg"></a>
+    </div>
+    <nav class="nav-links">
+        <a href="index.php">Home</a>
+        <a href="shop.php">Shop</a>
+        <a href="collections.php">Collections</a>
+        <a href="about.php">About</a>
+        <a href="lookbook.php">Lookbook</a>
+        <a href="contact.php">Contact</a>
+    </nav>
+    <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+</header>
 
-        <div class="nav-icons">
-            <div class="search-container" id="search-container">
-                <button id="search-toggle" class="icon-btn" aria-label="Toggle search bar">
-                    <i class="fas fa-search"></i>
-                </button>
+<!-- Slide-out drawer -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<aside class="drawer" id="drawer">
+    <button class="drawer-close" id="drawerClose" aria-label="Close menu">&times;</button>
 
-                <form id="search-form" class="search-form" action="search.php" method="GET">
-                    <input type="text" name="q" placeholder="Search..." aria-label="Search">
-                    <button type="submit" class="submit-btn">Go</button>
-                </form>
-            </div>
-            <?php if (isset($_SESSION['user_id'])): ?>
-                <a href="account.php" aria-label="My Account"><i class="fa-solid fa-user"></i></a>
-            <?php else: ?>
-                <a href="login.php" aria-label="Log in"><i class="fa-solid fa-user"></i></a>
+    <?php if (isset($_SESSION['user_id'])): ?>
+        <a href="account.php"><i class="fa-solid fa-user"></i> My Account</a>
+        <a href="order.php"><i class="fa-solid fa-box"></i> Orders</a>
+        <a href="cart.php">
+            <i class="fa-solid fa-bag-shopping"></i> Bag
+            <?php if ($cartCount > 0): ?>
+                <span class="drawer-cart-badge"><?php echo $cartCount; ?></span>
             <?php endif; ?>
-            <a href="cart.php" class="nav-cart" aria-label="Cart">
-                <i class="fa-solid fa-bag-shopping"></i>
-                <span><?php echo $cartCount; ?></span>
-            </a>
+        </a>
+        <div class="account-section">
+            <a href="logout.php" class="logout-link">Log Out</a>
         </div>
-    </header>
+    <?php else: ?>
+        <a href="login.php"><i class="fa-solid fa-user"></i> Log In</a>
+    <?php endif; ?>
+    
+</aside>

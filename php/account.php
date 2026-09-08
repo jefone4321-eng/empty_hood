@@ -87,12 +87,7 @@ $stmt = $pdo->prepare("SELECT name, email, phone, address, profile_picture, crea
 $stmt->execute([$_SESSION['user_id']]);
 $account = $stmt->fetch();
 
-if ($account === false) {
-    // User not found — maybe session is invalid or user was deleted
-    session_destroy();
-    header("Location: login.php?error=account_not_found");
-    exit;
-}
+
 $cartCount = array_sum($_SESSION['cart'] ?? []);
 $navStyle = "";
 include 'header.php';
@@ -202,5 +197,6 @@ include 'header.php';
     <a href="logout.php" class="logout-link">Log Out</a>
   </div>
 </section>
+
 
 <?php include 'footer.php'; ?>
