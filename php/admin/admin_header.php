@@ -52,6 +52,10 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                     class="<?php echo in_array($currentPage, ['orders.php', 'order_detail.php']) ? 'active' : ''; ?>">
                     <i class="fa-solid fa-chart-line"></i> Sales Report
                 </a>
+                
+                <a href="messages.php" class="<?php echo $currentPage === 'messages.php' ? 'active' : ''; ?>">
+                    <i class="fa-solid fa-envelope"></i> Messages
+                </a>
             </nav>
 
             <div class="admin-sidebar-footer">

@@ -5,53 +5,50 @@ $pdo = getConnection();
 
 $action = $_POST['action'] ?? 'add';
 $id = $_POST['id'] ?? null;
-$isAjax = isset($_POST['ajax']); // flag we'll send from JavaScript
+$isAjax = isset($_POST['ajax']);
 
 if ($id) {
   $productId = (int) str_replace('p', '', $id);
 
-  
-  $stmt = $pdo->prepare("SELECT stock FROM products WHERE id = ?");
-  $stmt->execute([$productId]);
-  $row = $stmt->fetch();
-  $availableStock = $row ? (int) $row['stock'] : 0;
-
   switch ($action) {
     case 'add':
-      $currentQty = $_SESSION['cart'][$id] ?? 0;
-      if ($currentQty < $availableStock) {
+      $stmt = $pdo->prepare("UPDATE products SET stock = stock - 1 WHERE id = ? AND stock >= 1");
+      $stmt->execute([$productId]);
+
+      if ($stmt->rowCount() > 0) {
+        $currentQty = $_SESSION['cart'][$id] ?? 0;
         $_SESSION['cart'][$id] = $currentQty + 1;
       }
       break;
 
-      case 'add_multiple':
-    $quantity = max(1, (int) ($_POST['quantity'] ?? 1));
-    $currentQty = $_SESSION['cart'][$id] ?? 0;
-
-    if ($currentQty + $quantity <= $availableStock) {
-        $_SESSION['cart'][$id] = $currentQty + $quantity;
-    }
-    break;
-
-    case 'buy_now':
-      
+    case 'add_multiple':
       $quantity = max(1, (int) ($_POST['quantity'] ?? 1));
 
-      if ($quantity <= $availableStock) {
-        $_SESSION['buy_now'] = ['id' => $id, 'qty' => $quantity];
+      $stmt = $pdo->prepare("UPDATE products SET stock = stock - ? WHERE id = ? AND stock >= ?");
+      $stmt->execute([$quantity, $productId, $quantity]);
+
+      if ($stmt->rowCount() > 0) {
+        $currentQty = $_SESSION['cart'][$id] ?? 0;
+        $_SESSION['cart'][$id] = $currentQty + $quantity;
       }
       break;
 
     case 'increase':
-      $currentQty = $_SESSION['cart'][$id] ?? 0;
-      if ($currentQty < $availableStock) {
-        $_SESSION['cart'][$id] = $currentQty + 1;
+      $stmt = $pdo->prepare("UPDATE products SET stock = stock - 1 WHERE id = ? AND stock >= 1");
+      $stmt->execute([$productId]);
+
+      if ($stmt->rowCount() > 0) {
+        $_SESSION['cart'][$id] = ($_SESSION['cart'][$id] ?? 0) + 1;
       }
       break;
 
     case 'decrease':
       if (isset($_SESSION['cart'][$id])) {
         $_SESSION['cart'][$id]--;
+
+        $update = $pdo->prepare("UPDATE products SET stock = stock + 1 WHERE id = ?");
+        $update->execute([$productId]);
+
         if ($_SESSION['cart'][$id] <= 0) {
           unset($_SESSION['cart'][$id]);
         }
@@ -59,13 +56,17 @@ if ($id) {
       break;
 
     case 'remove':
+      $qty = $_SESSION['cart'][$id] ?? 0;
+      if ($qty > 0) {
+        $update = $pdo->prepare("UPDATE products SET stock = stock + ? WHERE id = ?");
+        $update->execute([$qty, $productId]);
+      }
       unset($_SESSION['cart'][$id]);
       break;
   }
 }
 
 if ($isAjax) {
-  // Respond with JSON instead of redirecting
   $newQty = $_SESSION['cart'][$id] ?? 0;
   $cartCount = array_sum($_SESSION['cart'] ?? []);
 

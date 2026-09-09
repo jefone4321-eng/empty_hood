@@ -1,5 +1,6 @@
 <?php
   session_start();
+  require_once '../database/config.php';
   require_once 'validation.php';
 
   $cartCount = array_sum($_SESSION['cart'] ?? []);
@@ -13,9 +14,17 @@
      $result = validateContactInput($_POST);
      $errors = $result['errors'];
 
-     if(empty($errors)) {
+     if (empty($errors)) {
+        $pdo = getConnection();
 
-    $success = true;
+        $insert = $pdo->prepare("INSERT INTO contact_submissions (name, email, message) VALUES (?, ?, ?)");
+        $insert->execute([
+          $result['data']['name'],
+          $result['data']['email'],
+          $result['data']['message'],
+        ]);
+
+        $success = true;
      }
   }
 ?>

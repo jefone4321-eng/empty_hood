@@ -48,28 +48,38 @@
   $shipping = 120.00;
   $total = $subtotal + $shipping;
 
-  $insertOrder = $pdo->prepare("INSERT INTO orders (user_id, address, payment_method, total, status) VALUES (?, ?, ?, ?, 'Processing')");
-  $insertOrder->execute([$_SESSION['user_id'], $address, $paymentMethod, $total]);
-  $orderId = $pdo->lastInsertId();
+  $pdo->beginTransaction();
 
-  $insertItem = $pdo->prepare("INSERT INTO order_items (order_id, product_name, price, quantity) VALUES (?, ?, ?, ?)");
-  $updateStock = $pdo->prepare("UPDATE products SET stock = stock - ? WHERE name = ?");
+  try {
 
-  foreach ($lineItems as $item) {
-    $insertItem->execute([$orderId, $item['name'], $item['price'], $item['qty']]);
-    $updateStock->execute([$item['qty'], $item['name']]);
+    $insertOrder = $pdo->prepare("INSERT INTO orders (user_id, address, payment_method, total, status) VALUES (?, ?, ?, ?, 'Processing')");
+    $insertOrder->execute([$_SESSION['user_id'], $address, $paymentMethod, $total]);
+    $orderId = $pdo->lastInsertId();
+
+    $insertItem = $pdo->prepare("INSERT INTO order_items (order_id, product_name, price, quantity) VALUES (?, ?, ?, ?)");
+    foreach ($lineItems as $item) {
+      $insertItem->execute([$orderId, $item['name'], $item['price'], $item['qty']]);
+    }
+
+    $updateAddress = $pdo->prepare("UPDATE accounts SET address = ? WHERE id = ?");
+    $updateAddress->execute([$address, $_SESSION['user_id']]);
+
+    $pdo->commit();
+
+    if ($isBuyNow) {
+      unset($_SESSION['buy_now']);
+    } else {
+      unset($_SESSION['cart']);
+    }
+    unset($_SESSION['pending_order']);
+
+    header("Location: order_success.php?id=" . $orderId);
+    exit;
+
+  } catch (Exception $e) {
+    $pdo->rollBack();
+    $_SESSION['checkout_error'] = "Something went wrong placing your order. Please try again.";
+    header("Location: checkout.php");
+    exit;
   }
-
-  $updateAddress = $pdo->prepare("UPDATE accounts SET address = ? WHERE id = ?");
-  $updateAddress->execute([$address, $_SESSION['user_id']]);
-
-  if ($isBuyNow) {
-    unset($_SESSION['buy_now']);
-  } else {
-    unset($_SESSION['cart']);
-  }
-  unset($_SESSION['pending_order']);
-
-  header("Location: order_success.php?id=" . $orderId);
-  exit;
 ?>
