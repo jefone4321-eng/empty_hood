@@ -1,5 +1,12 @@
 <?php
-  require_once __DIR__ . '/../database/config.php';
+  session_start();
+require_once __DIR__ . '/csrf.php';
+if (!csrf_verify()) {
+  http_response_code(403);
+  echo json_encode(['success' => false, 'message' => 'Invalid request.']);
+  exit;
+}
+require_once __DIR__ . '/../database/config.php';
   header('Content-Type: application/json');
 
   $email = trim($_POST['email'] ?? '');

@@ -1,10 +1,13 @@
+<?php require_once __DIR__ . '/../error_handler.php'; ?>
 <?php
 session_start();
 if (!isset($_SESSION['user_id']) || empty($_SESSION['is_admin'])) {
     header("Location: admin_login.php");
+
     exit;
 }
 require_once __DIR__ . '/../../database/config.php';
+require_once __DIR__ . '/../csrf.php';
 $pdo = getConnection();
 
 $currentPage = basename($_SERVER['PHP_SELF']);
@@ -12,7 +15,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin — Empty Hood</title>
@@ -52,9 +55,13 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                     class="<?php echo in_array($currentPage, ['orders.php', 'order_detail.php']) ? 'active' : ''; ?>">
                     <i class="fa-solid fa-chart-line"></i> Sales Report
                 </a>
-                
+
                 <a href="messages.php" class="<?php echo $currentPage === 'messages.php' ? 'active' : ''; ?>">
                     <i class="fa-solid fa-envelope"></i> Messages
+                </a>
+                <a href="inventory_history.php"
+                    class="<?php echo $currentPage === 'inventory_history.php' ? 'active' : ''; ?>">
+                    <i class="fa-solid fa-clock-rotate-left"></i> Inventory History
                 </a>
             </nav>
 

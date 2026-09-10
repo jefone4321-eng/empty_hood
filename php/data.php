@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/error_handler.php'; ?>
 <?php
   require_once __DIR__ . '/../database/config.php';
   $pdo = getConnection();

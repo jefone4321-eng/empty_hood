@@ -1,14 +1,20 @@
 <?php
   session_start();
   require_once __DIR__ . '/../../database/config.php';
+  require_once __DIR__ . '/../csrf.php';
+
+  if ($_SERVER['REQUEST_METHOD'] === 'POST' && !csrf_verify()) {
+  http_response_code(403);
+  die('Invalid request.');
+}
 
   // If already logged in as admin, skip straight to dashboard
   if (isset($_SESSION['user_id']) && !empty($_SESSION['is_admin'])) {
     header("Location: dashboard.php");
     exit;
-  }
+  } 
 
-  $errors = [];
+
 
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');
@@ -61,6 +67,7 @@
         <p class="admin-login-sub">Restricted access — authorized personnel only.</p>
 
         <form method="post" action="admin_login.php" novalidate>
+           <?php echo csrf_field(); ?>
             <div class="admin-form-group">
                 <label>
                     Email

@@ -22,7 +22,8 @@
             <td>
                 <?php if ($customer['id'] != $_SESSION['user_id']): ?>
                     <form method="post" action="delete_customer.php" onsubmit="return confirm('Delete this account?');" style="display:inline">
-                        <input type="hidden" name="id" value="<?php echo $customer['id']; ?>">
+                      <?php echo csrf_field(); ?>    
+                    <input type="hidden" name="id" value="<?php echo $customer['id']; ?>">
                         <button type="submit" class="admin-delete-btn">Delete</button>
                     </form>
                 <?php else: ?>

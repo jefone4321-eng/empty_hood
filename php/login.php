@@ -1,9 +1,19 @@
+<?php require_once __DIR__ . '/error_handler.php'; ?>
 <?php
 session_start();
 require_once '../database/config.php';
 require_once 'validation.php';
 
 $errors = [];
+
+if (isset($_SESSION['user_id'])) {
+  if (!empty($_SESSION['is_admin'])) {
+    header("Location: admin/dashboard.php");
+  } else {
+    header("Location: index.php");
+  }
+  exit;
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $result = validateLoginInput($_POST);
@@ -36,7 +46,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         setcookie('remember_me', $user['id'] . ':' . $token, time() + (30 * 24 * 60 * 60), '/');
       }
 
-      header("Location: index.php");
+      // Admins skip the storefront homepage and land straight on their dashboard
+      if (!empty($_SESSION['is_admin'])) {
+        header("Location: admin/dashboard.php");
+      } else {
+        header("Location: index.php");
+      }
       exit;
     }
   }

@@ -43,18 +43,20 @@
     <h4>JOIN THE HOOD</h4>
     <p>Get new access to new drops and exclusive offers.</p>
     <form class="newsletter-form" id="newsletterForm">
-        <input type="email" name="email" placeholder="Enter your email" required>
-        <button type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+      <?php echo csrf_field(); ?>
+      <input type="email" name="email" placeholder="Enter your email" required>
+      <button type="submit"><i class="fa-solid fa-arrow-right"></i></button>
     </form>
     <p class="newsletter-message" id="newsletterMessage"></p>
-</div>
+  </div>
 </footer>
 
-<p class="copyright">© <?php echo date("Y"); ?> empty-hood. All rights reserved. · <a href="admin/admin_login.php"
-    class="admin-entry-link">Admin</a></p>
+<p class="copyright">© <?php echo date("Y"); ?> empty-hood. All rights reserved.
+  <?php if (empty($_SESSION['user_id']) || !empty($_SESSION['is_admin'])): ?>
+    · <a href="admin/admin_login.php" class="admin-entry-link">Admin</a>
+  <?php endif; ?>
 
+  <script src="../js/app.js"></script>
+  </body>
 
-<script src="../js/app.js"></script>
-</body>
-
-</html>
+  </html>

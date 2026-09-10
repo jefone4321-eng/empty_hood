@@ -1,17 +1,27 @@
 <?php
+  
   include 'admin_header.php';
 
   $message = null;
 
   if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['stock_updates'])) {
+    require_once __DIR__ . '/../inventory_log.php';
+
     foreach ($_POST['stock_updates'] as $productId => $newStock) {
-      $newStock = max(0, (int) $newStock); // never allow negative stock
-      $stmt = $pdo->prepare("UPDATE products SET stock = ? WHERE id = ?");
-      $stmt->execute([$newStock, $productId]);
+      $newStock = max(0, (int) $newStock);
+
+      $current = $pdo->prepare("SELECT stock FROM products WHERE id = ?");
+      $current->execute([$productId]);
+      $previousStock = (int) $current->fetchColumn();
+
+      if ($previousStock !== $newStock) {
+        $stmt = $pdo->prepare("UPDATE products SET stock = ? WHERE id = ?");
+        $stmt->execute([$newStock, $productId]);
+        logInventoryChange($pdo, (int) $productId, 'manual_adjustment', $newStock - $previousStock, $previousStock, $newStock, $_SESSION['user_id'], 'Manual stock edit by admin');
+      }
     }
     $message = "Inventory updated successfully.";
-  }
-
+}
   $products = $pdo->query("SELECT id, name, image, stock FROM products ORDER BY stock ASC")->fetchAll();
 ?>
 
@@ -23,6 +33,7 @@
 <?php endif; ?>
 
 <form method="post">
+    <?php echo csrf_field(); ?>
   <div class="admin-table-wrapper">
     <table class="admin-table">
       <tr>

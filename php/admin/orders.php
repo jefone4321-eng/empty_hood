@@ -11,15 +11,24 @@
     $oldStatus = $current->fetchColumn();
 
     // If it's being cancelled now, and wasn't already cancelled, return the stock
-    if ($newStatus === 'Cancelled' && $oldStatus !== 'Cancelled') {
-        $items = $pdo->prepare("SELECT product_name, quantity FROM order_items WHERE order_id = ?");
-        $items->execute([$orderId]);
+   if ($newStatus === 'Cancelled' && $oldStatus !== 'Cancelled') {
+    require_once __DIR__ . '/../inventory_log.php';
+    $items = $pdo->prepare("SELECT product_name, quantity FROM order_items WHERE order_id = ?");
+    $items->execute([$orderId]);
 
-        foreach ($items->fetchAll() as $item) {
-            $restock = $pdo->prepare("UPDATE products SET stock = stock + ? WHERE name = ?");
-            $restock->execute([$item['quantity'], $item['product_name']]);
+    foreach ($items->fetchAll() as $item) {
+        $productRow = $pdo->prepare("SELECT id, stock FROM products WHERE name = ?");
+        $productRow->execute([$item['product_name']]);
+        $product = $productRow->fetch();
+
+        if ($product) {
+            $previousStock = (int) $product['stock'];
+            $restock = $pdo->prepare("UPDATE products SET stock = stock + ? WHERE id = ?");
+            $restock->execute([$item['quantity'], $product['id']]);
+            logInventoryChange($pdo, $product['id'], 'restock_cancel', $item['quantity'], $previousStock, $previousStock + $item['quantity'], $orderId, 'Order cancelled by admin');
         }
     }
+}
 
     $stmt = $pdo->prepare("UPDATE orders SET status = ? WHERE id = ?");
     $stmt->execute([$newStatus, $orderId]);
@@ -97,6 +106,7 @@
                 <td>₱<?php echo number_format($order['total'], 2); ?></td>
                 <td>
                     <form method="post" style="display:flex; gap:6px; align-items:center;">
+                          <?php echo csrf_field(); ?>
                         <input type="hidden" name="order_id" value="<?php echo $order['id']; ?>">
                         <select name="status" onchange="this.form.submit()"
                                 style="background:#0d0d0d; border:1px solid #2a2a2a; color:#fff; padding:6px; border-radius:4px; font-size:0.8rem;">

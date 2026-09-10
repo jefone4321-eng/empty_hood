@@ -40,20 +40,26 @@
       $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
       $maxSize = 3 * 1024 * 1024; // 3MB
 
-      if (!in_array($file['type'], $allowedTypes)) {
-        $errors['image_file'] = "Only JPG, PNG, or WEBP images are allowed.";
-      } elseif ($file['size'] > $maxSize) {
+      if ($file['size'] > $maxSize) {
         $errors['image_file'] = "Image must be smaller than 3MB.";
       } else {
-        $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
-        $safeName = preg_replace('/[^a-zA-Z0-9]/', '', pathinfo($file['name'], PATHINFO_FILENAME));
-        $newFilename = $safeName . "_" . time() . "." . $ext;
-        $destination = "../../images/products/" . $newFilename;
+        
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+$actualType = $finfo->file($file['tmp_name']);
 
-        if (move_uploaded_file($file['tmp_name'], $destination)) {
-          $imagePath = "images/products/" . $newFilename;
+        if (!in_array($actualType, $allowedTypes)) {
+          $errors['image_file'] = "Only JPG, PNG, or WEBP images are allowed.";
         } else {
-          $errors['image_file'] = "Could not save the uploaded image.";
+          $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+          $safeName = preg_replace('/[^a-zA-Z0-9]/', '', pathinfo($file['name'], PATHINFO_FILENAME));
+          $newFilename = $safeName . "_" . time() . "." . $ext;
+          $destination = "../../images/products/" . $newFilename;
+
+          if (move_uploaded_file($file['tmp_name'], $destination)) {
+            $imagePath = "images/products/" . $newFilename;
+          } else {
+            $errors['image_file'] = "Could not save the uploaded image.";
+          }
         }
       }
     } elseif (!$editing && $imagePath === '') {
@@ -79,6 +85,7 @@
 <h1><?php echo $editing ? 'Edit Product' : 'Add Product'; ?></h1>
 
 <form method="post" enctype="multipart/form-data" class="auth-form admin-form" novalidate>
+   <?php echo csrf_field(); ?>
     <label>Name
         <input type="text" name="name" value="<?php echo htmlspecialchars($product['name']); ?>"
                class="<?php echo isset($errors['name']) ? 'has-error' : ''; ?>">

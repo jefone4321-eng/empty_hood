@@ -2,6 +2,11 @@
   session_start();
   require_once '../database/config.php';
 
+  if ($_SERVER['REQUEST_METHOD'] === 'POST' && !csrf_verify()) {
+  http_response_code(403);
+  die('Invalid request.');
+}
+
   if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;

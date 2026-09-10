@@ -1,7 +1,15 @@
+ <?php require_once __DIR__ . '/error_handler.php'; ?>
 <?php
 session_start();
 require_once __DIR__ . '/../database/config.php';
+require_once __DIR__ .'/csrf.php';
+require_once __DIR__ . '/inventory_log.php';
 $pdo = getConnection();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !csrf_verify()) {
+  http_response_code(403);
+  die('Invalid request.');
+}
 
 $action = $_POST['action'] ?? 'add';
 $id = $_POST['id'] ?? null;
@@ -32,6 +40,11 @@ if ($id) {
         $_SESSION['cart'][$id] = $currentQty + $quantity;
       }
       break;
+
+      case 'buy_now':
+  $quantity = max(1, (int) ($_POST['quantity'] ?? 1));
+  $_SESSION['buy_now'] = ['id' => $id, 'qty' => $quantity];
+  break;
 
     case 'increase':
       $stmt = $pdo->prepare("UPDATE products SET stock = stock - 1 WHERE id = ? AND stock >= 1");

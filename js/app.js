@@ -211,3 +211,32 @@ function closeDrawer() {
 hamburgerBtn.addEventListener('click', openDrawer);
 drawerClose.addEventListener('click', closeDrawer);
 drawerOverlay.addEventListener('click', closeDrawer);
+
+const newsletterForm = document.getElementById('newsletterForm');
+const newsletterMessage = document.getElementById('newsletterMessage');
+
+if (newsletterForm) {
+  newsletterForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(newsletterForm);
+
+    fetch('newsletter_subscribe.php', {
+      method: 'POST',
+      body: formData
+    })
+      .then(response => response.json())
+      .then(data => {
+        newsletterMessage.textContent = data.message;
+        newsletterMessage.className = 'newsletter-message ' + (data.success ? 'success' : 'error');
+
+        if (data.success) {
+          newsletterForm.reset();
+        }
+      })
+      .catch(() => {
+        newsletterMessage.textContent = 'Something went wrong. Please try again.';
+        newsletterMessage.className = 'newsletter-message error';
+      });
+  });
+}

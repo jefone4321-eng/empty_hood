@@ -31,7 +31,7 @@
     if ($product) {
       $priceNumber = (float) str_replace(["₱", ","], "", $product['price']);
       $subtotal += $priceNumber * $buyNow['qty'];
-      $lineItems[] = ['name' => $product['name'], 'price' => $priceNumber, 'qty' => $buyNow['qty']];
+      $lineItems[] = ['id' => $buyNow['id'], 'name' => $product['name'], 'price' => $priceNumber, 'qty' => $buyNow['qty']];
     }
   } else {
     $cartItems = $_SESSION['cart'] ?? [];
@@ -40,7 +40,7 @@
       if ($product) {
         $priceNumber = (float) str_replace(["₱", ","], "", $product['price']);
         $subtotal += $priceNumber * $qty;
-        $lineItems[] = ['name' => $product['name'], 'price' => $priceNumber, 'qty' => $qty];
+        $lineItems[] = ['id' => $id, 'name' => $product['name'], 'price' => $priceNumber, 'qty' => $qty];
       }
     }
   }
@@ -60,6 +60,26 @@
     foreach ($lineItems as $item) {
       $insertItem->execute([$orderId, $item['name'], $item['price'], $item['qty']]);
     }
+
+    // Cart items already had stock deducted at add-to-cart time. Buy Now
+    // reserves without deducting, so deduct now, at order placement.
+   if ($isBuyNow) {
+    require_once __DIR__ . '/inventory_log.php';
+    foreach ($lineItems as $item) {
+        $productId = (int) str_replace('p', '', $item['id']);
+
+        $current = $pdo->prepare("SELECT stock FROM products WHERE id = ?");
+        $current->execute([$productId]);
+        $previousStock = (int) $current->fetchColumn();
+
+        $deduct = $pdo->prepare("UPDATE products SET stock = stock - ? WHERE id = ? AND stock >= ?");
+        $deduct->execute([$item['qty'], $productId, $item['qty']]);
+
+        if ($deduct->rowCount() > 0) {
+            logInventoryChange($pdo, $productId, 'sale', -$item['qty'], $previousStock, $previousStock - $item['qty'], $orderId, 'Buy Now order placed via GCash');
+        }
+    }
+}
 
     $updateAddress = $pdo->prepare("UPDATE accounts SET address = ? WHERE id = ?");
     $updateAddress->execute([$address, $_SESSION['user_id']]);

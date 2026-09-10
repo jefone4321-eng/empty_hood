@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/error_handler.php'; ?>
 <?php
 session_start();
 require_once '../database/config.php';

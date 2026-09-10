@@ -46,7 +46,7 @@
   include 'header.php';
 ?>
 
-<!-- rest of the page stays exactly the same -->
+
 
 <section class="shop-page checkout-page">
   <div class="gcash-payment">

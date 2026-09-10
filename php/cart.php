@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 $cartCount = array_sum($_SESSION['cart'] ?? []);
 include 'header.php';
@@ -43,22 +44,28 @@ $subtotal = 0;
             </div>
             <div class="cart-qty">
               <form method="post" action="create_cart.php" class="qty-form">
+                <?php echo csrf_field(); ?>
                 <input type="hidden" name="id" value="<?php echo $id; ?>">
                 <input type="hidden" name="action" value="decrease">
+                <input type="hidden" name="redirect" value="cart.php">
                 <button type="submit">−</button>
               </form>
               <span class="qty-value"><?php echo $qty; ?></span>
               <form method="post" action="create_cart.php" class="qty-form">
+                <?php echo csrf_field(); ?>
                 <input type="hidden" name="id" value="<?php echo $id; ?>">
                 <input type="hidden" name="action" value="increase">
+                 <input type="hidden" name="redirect" value="cart.php">
                 <button type="submit">+</button>
               </form>
             </div>
             <p class="cart-row-total" data-price="<?php echo $priceNumber; ?>">₱<?php echo number_format($lineTotal, 2); ?>
             </p>
             <form method="post" action="create_cart.php" class="qty-form remove-form">
+              <?php echo csrf_field(); ?>
               <input type="hidden" name="id" value="<?php echo $id; ?>">
               <input type="hidden" name="action" value="remove">
+               <input type="hidden" name="redirect" value="cart.php">
               <button type="submit" class="cart-remove">Remove</button>
             </form>
           </div>

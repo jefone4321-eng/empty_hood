@@ -38,6 +38,7 @@ $activeCategory = isset($_GET['category']) ? $_GET['category'] : "All";
             <?php if ($product['stock'] > 0): ?>
               <div class="product-actions">
                 <form method="post" action="create_cart.php" class="qty-form">
+                  <?php echo csrf_field(); ?>
                   <input type="hidden" name="id" value="<?php echo $product['id']; ?>">
                   <input type="hidden" name="action" value="add">
                   <input type="hidden" name="redirect" value="shop.php">
@@ -51,15 +52,15 @@ $activeCategory = isset($_GET['category']) ? $_GET['category'] : "All";
                   data-stock="<?php echo $product['stock']; ?>">
                   Buy Now
                 </button>
-                </div>
-              <?php else: ?>
-                <button class="add-to-cart-btn" disabled style="opacity:0.4; cursor:not-allowed;">Sold Out</button>
-              <?php endif; ?>
+              </div>
             <?php else: ?>
-              <a href="signup.php" class="add-to-cart-btn">Add to Bag</a>
-
-
+              <button class="add-to-cart-btn" disabled style="opacity:0.4; cursor:not-allowed;">Sold Out</button>
             <?php endif; ?>
+          <?php else: ?>
+            <a href="signup.php" class="add-to-cart-btn">Add to Bag</a>
+
+
+          <?php endif; ?>
         </article>
       <?php endif; ?>
     <?php endforeach; ?>
@@ -81,6 +82,7 @@ $activeCategory = isset($_GET['category']) ? $_GET['category'] : "All";
     </div>
 
     <form method="post" action="create_cart.php" id="buyNowForm">
+      <?php echo csrf_field(); ?>
       <input type="hidden" name="id" id="buyNowProductId">
       <input type="hidden" name="action" value="buy_now">
       <input type="hidden" name="quantity" id="buyNowQtyField" value="1">

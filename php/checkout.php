@@ -1,6 +1,8 @@
+ <?php require_once __DIR__ . '/error_handler.php'; ?>
 <?php
   session_start();
   require_once '../database/config.php';
+  require_once 'csrf.php';
 
   if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");

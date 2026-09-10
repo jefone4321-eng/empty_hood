@@ -20,7 +20,8 @@
                 <td><?php echo date("M j, Y g:i A", strtotime($message['submitted_at'])); ?></td>
                 <td>
                     <form method="post" action="delete_message.php" onsubmit="return confirm('Delete this message?');" style="display:inline">
-                        <input type="hidden" name="id" value="<?php echo $message['id']; ?>">
+                          <?php echo csrf_field(); ?>    
+                    <input type="hidden" name="id" value="<?php echo $message['id']; ?>">
                         <button type="submit" class="admin-delete-btn">Delete</button>
                     </form>
                 </td>

@@ -230,3 +230,52 @@
   align-items: center;
   justify-content: center;
 }
+
+.newsletter-message {
+  font-size: 0.8rem;
+  margin-top: 10px;
+  min-height: 16px;
+}
+
+.newsletter-message.success {
+  color: #8fc98a;
+}
+
+.newsletter-message.error {
+  color: #e08080;
+}
+
+.info-page {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 60px 40px;
+}
+
+.info-page h1 {
+  font-size: 2rem;
+  font-weight: 400;
+  margin-bottom: 24px;
+}
+
+.info-page h2 {
+  font-size: 1.1rem;
+  margin-top: 28px;
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+
+.info-page p {
+  color: #cccccc;
+  line-height: 1.7;
+  margin-bottom: 8px;
+}
+
+.info-page a {
+  color: #8c2f39;
+}
+
+.faq-item {
+  border-bottom: 1px solid #2a2a2a;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+}

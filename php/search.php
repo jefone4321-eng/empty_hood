@@ -1,21 +1,21 @@
 <?php
-  session_start();
-  $cartCount = array_sum($_SESSION['cart'] ?? []);
-  $navStyle = "";
-  include 'header.php';
-  include 'data.php';
+session_start();
+$cartCount = array_sum($_SESSION['cart'] ?? []);
+$navStyle = "";
+include 'header.php';
+include 'data.php';
 
-  $query = trim($_GET['q'] ?? '');
+$query = trim($_GET['q'] ?? '');
 
-  $results = [];
+$results = [];
 
-  if ($query !== '') {
-    foreach ($products as $product) {
-      if (stripos($product['name'], $query) !== false) {
-        $results[] = $product;
-      }
+if ($query !== '') {
+  foreach ($products as $product) {
+    if (stripos($product['name'], $query) !== false) {
+      $results[] = $product;
     }
   }
+}
 ?>
 
 <section class="shop-page">

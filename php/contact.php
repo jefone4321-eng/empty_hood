@@ -48,6 +48,7 @@
       <?php else: ?>
 
         <form method="post" action="contact.php" class="auth-form" novalidate>
+           <?php echo csrf_field(); ?>
           <label>
             Name
             <input type="text" name="name"

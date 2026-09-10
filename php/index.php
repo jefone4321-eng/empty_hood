@@ -177,6 +177,7 @@ $reviews = $stmt->fetchAll(); ?>
         <?php if (isset($_SESSION['user_id'])): ?>
             <h3>Leave a Review</h3>
             <form method="post" action="submit_review.php" class="review-form">
+                 <?php echo csrf_field(); ?>
                 <label>
                     Rating
                     <select name="rating" required>

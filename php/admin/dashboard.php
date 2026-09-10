@@ -14,7 +14,7 @@ $totalSales = $pdo->query("SELECT SUM(total) FROM orders WHERE status != 'Cancel
 
 <div class="admin-stats">
     <div class="admin-stat">
-        <div class="admin-stat-value"><?php echo $productCount; ?></div>
+  n.ss="admin-stat-value"><?php echo $productCount; ?></div>
         <div class="admin-stat-label">Total Products</div>
     </div>
     <div class="admin-stat">
