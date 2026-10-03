@@ -1,0 +1,257 @@
+
+/* Mobile: stack instead of side-by-side */
+@media (max-width: 768px) {
+  .auth-split {
+    flex-direction: column;
+    min-height: auto;
+  }
+
+  .auth-visual {
+    width: 100%;
+    height: 220px;
+  }
+
+  .auth-panel {
+    width: 100%;
+    padding: 40px 24px;
+  }
+}
+
+
+
+/* ============ TABLET (1024px and below) ============ */
+@media (max-width: 1024px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .lookbook-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .hero-text h1 {
+    font-size: 2.2rem;
+  }
+}
+
+/*Contact*/
+.contact-page {
+  padding: 60px 40px;
+  max-width: 560px;
+}
+
+.contact-page h1 {
+  font-size: 2rem;
+  font-weight: 400;
+  margin-bottom: 12px;
+}
+
+.contact-sub {
+  color: #999999;
+  margin-bottom: 32px;
+}
+
+.form-errors {
+  background-color: rgba(140, 47, 57, 0.15);
+  border: 1px solid #8c2f39;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  border-radius: 4px;
+}
+
+.form-errors p {
+  color: #ff8f8f;
+  font-size: 0.85rem;
+  margin: 4px 0;
+}
+
+.form-success {
+  background-color: rgba(92, 140, 87, 0.15);
+  border: 1px solid #5c8c57;
+  color: #a8d4a3;
+  padding: 20px;
+  border-radius: 4px;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.contact-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #cccccc;
+  font-size: 0.85rem;
+}
+
+.contact-form input,
+.contact-form textarea {
+  background-color: #141414;
+  border: 1px solid #2a2a2a;
+  color: #ffffff;
+  padding: 12px 14px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  border-radius: 2px;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: #8c2f39;
+}
+
+.contact-form textarea {
+  resize: vertical;
+}
+
+.signup-cta {
+  text-align: center;
+  padding: 60px 40px;
+  border-top: 1px solid #2a2a2a;
+}
+
+.signup-cta h2 {
+  font-size: 1.6rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+}
+
+.signup-cta p {
+  color: #999999;
+  margin-bottom: 24px;
+}
+
+a.add-to-cart-btn {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+}
+/* ============ MOBILE (768px and below) ============ */
+@media (max-width: 768px) {
+  /* Nav: stack and simplify */
+ 
+  .site-footer {
+  flex-direction: column;
+  gap: 32px;
+}
+
+.footer-brand,
+.footer-col,
+.footer-newsletter {
+  width: 100%;
+}
+ 
+  .nav {
+    flex-wrap: wrap;
+    padding: 16px 20px;
+  }
+
+  .nav-links {
+    display: none; /* hide full link list on mobile for now */
+  }
+
+  .nav-icons {
+    gap: 20px;
+  }
+
+  /* Hero: stack text above image instead of side-by-side */
+  .hero {
+    flex-direction: column;
+    min-height: auto;
+    padding-top: 100px;
+  }
+
+  .hero-text {
+    width: 100%;
+    padding: 0 20px;
+  }
+
+  .hero-image {
+    position: static;
+    width: 100%;
+    height: 320px;
+    margin-top: 24px;
+  }
+
+  .hero-text h1 {
+    font-size: 1.8rem;
+  }
+
+  /* Trust strip: stack into 2 columns instead of 1 row of 4 */
+  .trust-strip {
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .trust-item {
+    width: 45%;
+    flex: none;
+  }
+
+  /* Product grids: 2 columns instead of 4 */
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .product-card img {
+    height: 200px;
+  }
+
+  /* Our Story: stack instead of side-by-side */
+  .our-story {
+    flex-direction: column;
+    padding: 40px 20px;
+  }
+
+  .our-story-text,
+  .our-story-images {
+    width: 100%;
+  }
+
+  .our-story-images {
+    margin-top: 24px;
+  }
+
+  /* Lookbook: 2 columns instead of 6 */
+  .lookbook-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ============ SMALL MOBILE (480px and below) ============ */
+@media (max-width: 480px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lookbook-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .trust-item {
+    width: 100%;
+  }
+
+  .hero-text h1 {
+    font-size: 1.5rem;
+  }
+}
+
+.product-media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}

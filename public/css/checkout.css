@@ -1,0 +1,125 @@
+.checkout-layout {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+.checkout-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.checkout-form h2 {
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  margin-top: 12px;
+}
+
+.checkout-form textarea {
+  width: 100%;
+  background-color: #141414;
+  border: 1px solid #2a2a2a;
+  color: #ffffff;
+  padding: 12px 14px;
+  border-radius: 2px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.payment-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid #2a2a2a;
+  padding: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.payment-option input {
+  accent-color: #8c2f39;
+}
+
+.checkout-summary {
+  width: 380px;
+  background-color: #141414;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.checkout-item {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.checkout-item img {
+  width: 50px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.checkout-item-name {
+  font-size: 0.85rem;
+}
+
+.checkout-item-price {
+  color: #8c2f39;
+  font-size: 0.85rem;
+}
+
+.checkout-totals {
+  border-top: 1px solid #2a2a2a;
+  padding-top: 16px;
+  margin-top: 16px;
+}
+
+.checkout-totals p {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  color: #cccccc;
+}
+
+.checkout-grand-total {
+  font-weight: bold;
+  color: #ffffff !important;
+  font-size: 1.1rem !important;
+}
+
+.order-success {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.order-success-icon {
+  font-size: 3rem;
+  color: #5c8c57;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+  .checkout-layout {
+    flex-direction: column;
+  }
+  .checkout-summary {
+    width: 100%;
+  }
+}
+
+.checkout-cancel-link {
+  display: inline-block;
+  color: #999;
+  font-size: 0.9rem;
+  margin-bottom: 24px;
+  text-decoration: none;
+}
+
+.checkout-cancel-link:hover {
+  color: #fff;
+  text-decoration: underline;
+}

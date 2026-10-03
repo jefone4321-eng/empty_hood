@@ -1,0 +1,61 @@
+.about-page {
+  padding: 60px 40px;
+}
+
+.about-hero {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 60px;
+}
+
+.about-hero h1 {
+  font-size: 2.4rem;
+  font-weight: 400;
+  line-height: 1.3;
+  margin-top: 12px;
+}
+
+.about-content {
+  display: flex;
+  gap: 50px;
+  align-items: flex-start;
+  margin-bottom: 60px;
+}
+
+.about-text {
+  width: 40%;
+}
+
+.about-text p {
+  color: #cccccc;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.about-images {
+  width: 60%;
+  display: flex;
+  gap: 16px;
+}
+
+.about-images img {
+  width: 33.33%;
+  height: 380px;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+.about-cta {
+  text-align: center;
+  padding: 50px 0;
+  border-top: 1px solid #2a2a2a;
+}
+
+.about-cta h2 {
+  font-size: 1.6rem;
+  font-weight: 400;
+  margin-bottom: 24px;
+  letter-spacing: 0.05em;
+}
+

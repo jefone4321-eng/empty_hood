@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accounts{% endblock %}
+
+{% block body %}
+    <h1>Accounts</h1>
+
+    {% for message in app.flashes('error') %}
+        <p class="field-error" style="margin-bottom:16px;">{{ message }}</p>
+    {% endfor %}
+
+    <table class="admin-table">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Joined</th>
+            <th>Role</th>
+            <th>Actions</th>
+        </tr>
+        {% for account in accounts %}
+            <tr>
+                <td>{{ account.name }}</td>
+                <td>{{ account.email }}</td>
+                <td>{{ account.created_at|date('M j, Y') }}</td>
+                <td>
+                    {% if account.is_admin %}
+                        <span class="admin-badge admin-badge-admin">Admin</span>
+                    {% else %}
+                        <span class="admin-badge admin-badge-customer">Customer</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if account.id != currentUserId %}
+                        <form method="post" action="#" onsubmit="return confirm('Delete this account?');" style="display:inline">
+                            <input type="hidden" name="id" value="{{ account.id }}">
+                            <button type="submit" class="admin-delete-btn">Delete</button>
+                        </form>
+                    {% else %}
+                        <span class="account-since">(you)</span>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">No accounts yet.</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
