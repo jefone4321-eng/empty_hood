@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inventory History{% endblock %}
+
+{% block body %}
+    <div class="admin-page-header">
+        <h1>Inventory History</h1>
+    </div>
+    <p style="color:#888; margin-bottom:24px;">Full audit trail of every stock change.</p>
+
+    <form method="get" style="display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap;">
+        <select name="product_id" onchange="this.form.submit()"
+                style="background:#0d0d0d; border:1px solid #2a2a2a; color:#fff; padding:8px; border-radius:4px;">
+            <option value="">All Products</option>
+            {% for product in products %}
+                <option value="{{ product.id }}" {{ filterProductId == product.id ? 'selected' : '' }}>
+                    {{ product.name }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <select name="change_type" onchange="this.form.submit()"
+                style="background:#0d0d0d; border:1px solid #2a2a2a; color:#fff; padding:8px; border-radius:4px;">
+            <option value="">All Change Types</option>
+            {% for value, label in typeLabels %}
+                <option value="{{ value }}" {{ filterType == value ? 'selected' : '' }}>{{ label }}</option>
+            {% endfor %}
+        </select>
+
+        {% if filterProductId or filterType %}
+            <a href="{{ path('app_inventory_history') }}" class="admin-btn-primary" style="text-decoration:none;">Clear Filters</a>
+        {% endif %}
+    </form>
+
+    <div class="admin-table-wrapper">
+        <table class="admin-table">
+            <tr>
+                <th>Date</th>
+                <th>Product</th>
+                <th>Change</th>
+                <th>Qty</th>
+                <th>Previous → New</th>
+                <th>Reference</th>
+                <th>Note</th>
+            </tr>
+            {% for log in logs %}
+                <tr>
+                    <td>{{ log.created_at|date('M j, Y g:i A') }}</td>
+                    <td>
+                        <img src="/{{ log.product_image }}" class="admin-thumb" style="margin-right:8px;" alt="">
+                        {{ log.product_name }}
+                    </td>
+                    <td>
+                        <span class="admin-badge" style="{{ typeColors[log.change_type] ?? '' }}">
+                            {{ typeLabels[log.change_type] ?? log.change_type }}
+                        </span>
+                    </td>
+                    <td style="color: {{ log.quantity_change < 0 ? '#e08080' : '#8fc98a' }};">
+                        {{ log.quantity_change > 0 ? ('+' ~ log.quantity_change) : log.quantity_change }}
+                    </td>
+                    <td>{{ log.previous_stock }} → {{ log.new_stock }}</td>
+                    <td>{{ log.reference_id ? ('#' ~ log.reference_id) : '—' }}</td>
+                    <td>{{ log.note }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7" class="admin-empty">No inventory changes recorded yet.</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    {% if totalPages > 1 %}
+        <div style="display:flex; gap:8px; margin-top:20px; align-items:center;">
+            {% for p in 1..totalPages %}
+                <a href="{{ path('app_inventory_history', app.request.query.all|merge({page: p})) }}"
+                   style="padding:6px 12px; border-radius:4px; text-decoration:none; color:#fff;
+                          background: {{ p == page ? '#8c9eff' : '#0d0d0d' }};
+                          border:1px solid #2a2a2a;">
+                    {{ p }}
+                </a>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

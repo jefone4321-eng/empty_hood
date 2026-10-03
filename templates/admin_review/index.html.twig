@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reviews{% endblock %}
+
+{% block body %}
+    <h1>Reviews</h1>
+
+    <table class="admin-table">
+        <tr>
+            <th>Customer</th>
+            <th>Rating</th>
+            <th>Review</th>
+            <th>Date</th>
+            <th>Actions</th>
+        </tr>
+        {% for review in reviews %}
+            <tr>
+                <td>{{ review.name }}</td>
+                <td>
+                    {% for i in 1..5 %}{{ i <= review.rating ? '★' : '☆' }}{% endfor %}
+                </td>
+                <td>{{ review.review_text }}</td>
+                <td>{{ review.created_at|date('M j, Y') }}</td>
+                <td>
+                    <form method="post" action="#" onsubmit="return confirm('Delete this review?');" style="display:inline">
+                        <input type="hidden" name="id" value="{{ review.id }}">
+                        <button type="submit" class="admin-delete-btn">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">No reviews yet.</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

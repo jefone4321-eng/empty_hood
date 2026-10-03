@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inventory{% endblock %}
+
+{% block body %}
+    <h1>Inventory</h1>
+    <p style="color:#888; margin-bottom:24px;">Update stock levels for each product.</p>
+
+    {% if message %}
+        <p class="form-success" style="margin-bottom:20px;">{{ message }}</p>
+    {% endif %}
+
+    <form method="post">
+        <div class="admin-table-wrapper">
+            <table class="admin-table">
+                <tr>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Status</th>
+                    <th>Stock</th>
+                </tr>
+                {% for product in products %}
+                    <tr>
+                        <td><img src="/{{ product.image }}" class="admin-thumb" alt="{{ product.name }}"></td>
+                        <td>{{ product.name }}</td>
+                        <td>
+                            {% if product.stock <= 0 %}
+                                <span class="admin-badge" style="background:rgba(192,57,43,0.18); color:#e08080;">Out of Stock</span>
+                            {% elseif product.stock <= 5 %}
+                                <span class="admin-badge" style="background:rgba(201,162,39,0.18); color:#d9b84a;">Low Stock</span>
+                            {% else %}
+                                <span class="admin-badge" style="background:rgba(92,140,87,0.18); color:#8fc98a;">In Stock</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <input type="number" min="0"
+                                   name="stock_updates[{{ product.id }}]"
+                                   value="{{ product.stock }}"
+                                   style="width:80px; background:#0d0d0d; border:1px solid #2a2a2a; color:#fff; padding:8px; border-radius:4px;">
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">No products yet.</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <button type="submit" class="admin-btn-primary" style="margin-top:20px;">SAVE ALL CHANGES</button>
+    </form>
+{% endblock %}

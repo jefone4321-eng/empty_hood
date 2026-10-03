@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sales Report{% endblock %}
+
+{% block body %}
+    {% set paymentStatusColors = {
+        'Unpaid': 'background:rgba(192,57,43,0.18); color:#e08080;',
+        'Pending Verification': 'background:rgba(201,162,39,0.18); color:#d9b84a;',
+        'Paid': 'background:rgba(92,140,87,0.18); color:#8fc98a;'
+    } %}
+
+    <h1>Sales Report</h1>
+    <p style="color:#888; margin-bottom:24px;">Overview of orders and revenue.</p>
+
+    <div class="admin-stats">
+        <div class="admin-stat">
+            <div class="admin-stat-value">₱{{ stats.totalRevenue|number_format(2) }}</div>
+            <div class="admin-stat-label">Total Revenue</div>
+        </div>
+        <div class="admin-stat">
+            <div class="admin-stat-value">₱{{ stats.todayRevenue|number_format(2) }}</div>
+            <div class="admin-stat-label">Revenue Today</div>
+        </div>
+        <div class="admin-stat">
+            <div class="admin-stat-value">{{ stats.totalOrders }}</div>
+            <div class="admin-stat-label">Total Orders</div>
+        </div>
+        <div class="admin-stat">
+            <div class="admin-stat-value">{{ stats.pendingCount }}</div>
+            <div class="admin-stat-label">Pending Orders</div>
+        </div>
+        <div class="admin-stat">
+            <div class="admin-stat-value">{{ stats.awaitingVerification }}</div>
+            <div class="admin-stat-label">Payments to Verify</div>
+        </div>
+    </div>
+
+    <form method="get" style="margin-bottom:16px;">
+        <input type="text" name="q" placeholder="Search by transaction number..."
+               value="{{ search }}"
+               style="background:#0d0d0d; border:1px solid #2a2a2a; color:#fff; padding:8px 12px; border-radius:4px; width:280px;">
+        <button type="submit" class="admin-btn-primary" style="padding:8px 16px;">Search</button>
+        {% if search != '' %}
+            <a href="{{ path('app_orders') }}" style="color:#8c9eff; margin-left:8px;">Clear</a>
+        {% endif %}
+    </form>
+
+    <div class="admin-table-wrapper">
+        <table class="admin-table">
+            <tr>
+                <th>Transaction No.</th>
+                <th>Customer</th>
+                <th>Date</th>
+                <th>Payment Method</th>
+                <th>Payment Status</th>
+                <th>Total</th>
+                <th>Order Status</th>
+                <th>Actions</th>
+            </tr>
+            {% for order in orders %}
+                <tr>
+                    <td>
+                        {{ order.transaction_number ?? ('#' ~ order.id) }}
+                        <br><span style="color:#777; font-size:0.75rem;">internal #{{ order.id }}</span>
+                    </td>
+                    <td>
+                        {{ order.customer_name }}<br>
+                        <span style="color:#777; font-size:0.78rem;">{{ order.customer_email }}</span>
+                    </td>
+                    <td>{{ order.created_at|date('M j, Y') }}</td>
+                    <td>
+                        {{ order.payment_method }}
+                        {% if order.reference_number %}
+                            <br><span style="color:#777; font-size:0.75rem;">Ref: {{ order.reference_number }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if order.status == 'Cancelled' %}
+                            <span class="admin-badge" style="{{ paymentStatusColors[order.payment_status] ?? '' }}">
+                                {{ order.payment_status }}
+                            </span>
+                        {% else %}
+                            <form method="post" style="display:flex; gap:6px; align-items:center;">
+                                <input type="hidden" name="order_id" value="{{ order.id }}">
+                                <select name="payment_status" onchange="this.form.submit()"
+                                        style="background:#0d0d0d; border:1px solid #2a2a2a; padding:6px; border-radius:4px; font-size:0.8rem; {{ paymentStatusColors[order.payment_status] ?? '' }}">
+                                    {% for ps in paymentStatusOptions %}
+                                        <option value="{{ ps }}" {{ order.payment_status == ps ? 'selected' : '' }}>{{ ps }}</option>
+                                    {% endfor %}
+                                </select>
+                            </form>
+                        {% endif %}
+                    </td>
+                    <td>₱{{ order.total|number_format(2) }}</td>
+                    <td>
+                        {% if order.status == 'Cancelled' %}
+                            <span class="order-status-badge order-status-cancelled">Cancelled</span>
+                        {% else %}
+                            <form method="post" style="display:flex; gap:6px; align-items:center;">
+                                <input type="hidden" name="order_id" value="{{ order.id }}">
+                                <select name="status" onchange="this.form.submit()"
+                                        style="background:#0d0d0d; border:1px solid #2a2a2a; color:#fff; padding:6px; border-radius:4px; font-size:0.8rem;">
+                                    {% for status in statusOptions %}
+                                        <option value="{{ status }}" {{ order.status == status ? 'selected' : '' }}>{{ status }}</option>
+                                    {% endfor %}
+                                </select>
+                            </form>
+                        {% endif %}
+                    </td>
+                    <td><a href="#">View</a></td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8" class="admin-empty">No orders yet.</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

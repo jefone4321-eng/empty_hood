@@ -1,35 +1,49 @@
-<aside class="sidebar">
-    <div class="sidebar-header">
-        <h2>My App</h2>
-    </div>
+{% set route = app.request.attributes.get('_route') %}
+
+<aside class="admin-sidebar">
+    <div class="admin-sidebar-brand">My App</div>
 
     <nav>
         <ul>
             <li>
-                <a href="{{ path('app_dashboard') }}">Dashboard</a>
-            </li>
-
-            <li>
-                <a href="{{ path('app_products') }}">Products</a>
-            </li>
-
-            <li>
-              <a href="{{ path('app_accounts') }}">Accounts</a>
+                <a href="{{ path('app_dashboard') }}" class="{{ route == 'app_dashboard' ? 'active' : '' }}">
+                    <i class="fa-solid fa-gauge-high"></i><span>Dashboard</span>
+                </a>
             </li>
             <li>
-                <a>Reviews</a>
+                <a href="{{ path('app_products') }}" class="{{ route == 'app_products' ? 'active' : '' }}">
+                    <i class="fa-solid fa-shirt"></i><span>Products</span>
+                </a>
             </li>
             <li>
-                <a>Sales Report</a>
+                <a href="{{ path('app_accounts') }}" class="{{ route == 'app_accounts' ? 'active' : '' }}">
+                    <i class="fa-solid fa-users"></i><span>Accounts</span>
+                </a>
             </li>
             <li>
-                <a>Inventory</a>
+                <a href="{{ path('app_reviews') }}" class="{{ route == 'app_reviews' ? 'active' : '' }}">
+                    <i class="fa-solid fa-star"></i><span>Reviews</span>
+                </a>
             </li>
             <li>
-                <a>Inventory History</a>
+                <a href="{{ path('app_inventory') }}" class="{{ route == 'app_inventory' ? 'active' : '' }}">
+                    <i class="fa-solid fa-boxes-stacked"></i><span>Inventory</span>
+                </a>
             </li>
             <li>
-                <a>Messages</a>
+                <a href="{{ path('app_orders') }}" class="{{ route == 'app_orders' ? 'active' : '' }}">
+                    <i class="fa-solid fa-chart-line"></i><span>Sales Report</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('app_messages') }}" class="{{ route == 'app_messages' ? 'active' : '' }}">
+                    <i class="fa-solid fa-envelope"></i><span>Messages</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('app_inventory_history') }}" class="{{ route == 'app_inventory_history' ? 'active' : '' }}">
+                    <i class="fa-solid fa-clock-rotate-left"></i><span>Inventory History</span>
+                </a>
             </li>
         </ul>
     </nav>
