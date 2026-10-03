@@ -1,0 +1,2 @@
+[10-Sep-2026 04:55:09 Europe/Berlin] Uncaught exception: Call to undefined function csrf_verify() in C:\xampp\htdocs\EmptyHood\php\create_cart.php:9
+[10-Sep-2026 04:55:16 Europe/Berlin] Uncaught exception: Call to undefined function csrf_verify() in C:\xampp\htdocs\EmptyHood\php\create_cart.php:9
