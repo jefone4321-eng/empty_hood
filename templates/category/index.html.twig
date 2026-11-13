@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Categories{% endblock %}
+
+{% block body %}
+    <div class="admin-page-header">
+        <div>
+            <h1>Categories</h1>
+            <p style="color:#888; margin:0;">Group products into collections</p>
+        </div>
+        <a href="{{ path('app_category_new') }}" class="admin-btn-primary">
+            <i class="fa-solid fa-plus"></i> Add Category
+        </a>
+    </div>
+
+    <div class="admin-table-wrapper">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Slug</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for category in categories %}
+                <tr>
+                    <td>{{ category.name }}</td>
+                    <td>{{ category.slug }}</td>
+                    <td>{{ category.description ?: '-' }}</td>
+                    <td>
+                        <a href="{{ path('app_category_show', {'id': category.id}) }}">View</a>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('app_category_edit', {'id': category.id}) }}" style="margin-left:12px;">Edit</a>
+                            <form method="post" action="{{ path('app_category_delete', {'id': category.id}) }}" style="display:inline;" onsubmit="return confirm('Delete {{ category.name|e('js') }}?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.id) }}">
+                                <button class="admin-delete-btn">Delete</button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="4" class="admin-empty">No categories yet.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

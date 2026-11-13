@@ -1,0 +1,33 @@
+{% extends 'base_auth.html.twig' %}
+
+{% block title %}Sign in{% endblock %}
+
+{% block body %}
+    <div class="admin-login-wrapper">
+        <div class="admin-login-box">
+            <div class="admin-login-icon"><i class="fa-solid fa-lock"></i></div>
+            <h1>ADMIN</h1>
+            <p class="admin-login-sub">Sign in to manage the store</p>
+
+            {% if error %}
+                <div class="flash flash-error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+
+            <form method="post" class="admin-form-group">
+                <label>
+                    Email
+                    <input type="email" name="_username" value="{{ last_username }}" autocomplete="email" required autofocus>
+                </label>
+
+                <label>
+                    Password
+                    <input type="password" name="_password" autocomplete="current-password" required>
+                </label>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <button type="submit" class="admin-login-submit">Sign in</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -5,57 +5,47 @@
 {% block body %}
     <h1>Dashboard</h1>
     <p style="color:#888; margin-bottom:28px;">
-        Welcome back, {{ userName }}.
+        Welcome back, {{ app.user.fullName }}.
     </p>
 
     <div class="admin-stats">
+        <div class="admin-stat">
+            <div class="admin-stat-value">{{ stats.users }}</div>
+            <div class="admin-stat-label">Total Users</div>
+        </div>
+        <div class="admin-stat">
+            <div class="admin-stat-value">{{ stats.staff }}</div>
+            <div class="admin-stat-label">Total Staff</div>
+        </div>
         <div class="admin-stat">
             <div class="admin-stat-value">{{ stats.products }}</div>
             <div class="admin-stat-label">Total Products</div>
         </div>
         <div class="admin-stat">
-            <div class="admin-stat-value">{{ stats.accounts }}</div>
-            <div class="admin-stat-label">Total Accounts</div>
+            <div class="admin-stat-value">{{ stats.categories }}</div>
+            <div class="admin-stat-label">Categories</div>
         </div>
         <div class="admin-stat">
-            <div class="admin-stat-value">{{ stats.reviews }}</div>
-            <div class="admin-stat-label">Total Reviews</div>
-        </div>
-        <div class="admin-stat">
-            <div class="admin-stat-value">{{ stats.inventory }}</div>
-            <div class="admin-stat-label">Total Inventory</div>
-        </div>
-        <div class="admin-stat">
-            <div class="admin-stat-value">₱{{ stats.sales|number_format(2) }}</div>
-            <div class="admin-stat-label">Total Sales</div>
+            <div class="admin-stat-value">{{ stats.lowStock }}</div>
+            <div class="admin-stat-label">Low Stock (under 10)</div>
         </div>
     </div>
 
     <div class="admin-cards">
-        <a href="#" class="admin-card">
+        <a href="{{ path('app_product_index') }}" class="admin-card">
             <div class="admin-card-icon"><i class="fa-solid fa-shirt"></i></div>
             <h2>Products</h2>
             <p>Add, edit, or remove items from the store</p>
         </a>
-        <a href="#" class="admin-card">
+        <a href="{{ path('app_category_index') }}" class="admin-card">
+            <div class="admin-card-icon"><i class="fa-solid fa-tags"></i></div>
+            <h2>Categories</h2>
+            <p>Organize products into collections</p>
+        </a>
+        <a href="{{ path('app_user_index') }}" class="admin-card">
             <div class="admin-card-icon"><i class="fa-solid fa-users"></i></div>
             <h2>Accounts</h2>
-            <p>View and manage registered accounts</p>
-        </a>
-        <a href="#" class="admin-card">
-            <div class="admin-card-icon"><i class="fa-solid fa-star"></i></div>
-            <h2>Reviews</h2>
-            <p>Moderate customer reviews</p>
-        </a>
-        <a href="#" class="admin-card">
-            <div class="admin-card-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
-            <h2>Inventory</h2>
-            <p>Update stock levels for each product</p>
-        </a>
-        <a href="#" class="admin-card">
-            <div class="admin-card-icon"><i class="fa-solid fa-chart-line"></i></div>
-            <h2>Sales Report</h2>
-            <p>View orders, revenue, and manage order status</p>
+            <p>Manage admin and staff accounts</p>
         </a>
     </div>
 {% endblock %}

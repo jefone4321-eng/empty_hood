@@ -1,0 +1,126 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Products{% endblock %}
+
+{% block body %}
+    <div class="admin-page-header">
+        <div>
+            <h1>Products</h1>
+            <p style="color:#888; margin:0;">Add, edit, or remove items from the store</p>
+        </div>
+        <a href="{{ path('app_product_new') }}" class="admin-btn-primary">
+            <i class="fa-solid fa-plus"></i> Add Product
+        </a>
+    </div>
+
+    <form method="get" class="admin-filter">
+    <input type="text" name="q" value="{{ q }}" placeholder="Search name, SKU or owner">
+
+    <select name="category">
+        <option value="">All categories</option>
+        {% for c in categories %}
+            <option value="{{ c.id }}" {{ selectedCategory == c.id ? 'selected' : '' }}>{{ c.name }}</option>
+        {% endfor %}
+    </select>
+
+    <select name="status">
+        <option value="">All status</option>
+        <option value="active" {{ status == 'active' ? 'selected' : '' }}>Active</option>
+        <option value="hidden" {{ status == 'hidden' ? 'selected' : '' }}>Hidden</option>
+        <option value="low" {{ status == 'low' ? 'selected' : '' }}>Low stock (under 10)</option>
+    </select>
+
+    <button type="submit">Filter</button>
+    <a href="{{ path('app_product_index') }}" class="admin-filter-reset">Reset</a>
+</form>
+
+    <div class="admin-table-wrapper">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Status</th>
+                    <th>Added by</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for product in products %}
+                <tr>
+                    <td>
+                        {% if product.image %}
+                            <img src="{{ asset('uploads/products/' ~ product.image) }}" class="admin-thumb" alt="{{ product.name }}">
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.category ? product.category.name : '-' }}</td>
+                    <td>₱{{ product.price|number_format(2) }}</td>
+                    <td>{{ product.stock }}</td>
+                    <td>
+                        {% if product.isActive %}
+                            <span class="admin-badge admin-badge-admin">Active</span>
+                        {% else %}
+                            <span class="admin-badge admin-badge-customer">Hidden</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ product.createdBy ? product.createdBy.fullName : '-' }}</td>
+                    <td>
+                        <a href="{{ path('app_product_show', {'id': product.id}) }}">View</a>
+                        {% if is_granted('ROLE_ADMIN') or product.createdBy == app.user %}
+                            <a href="{{ path('app_product_edit', {'id': product.id}) }}" style="margin-left:12px;">Edit</a>
+                            <button type="button" class="admin-delete-btn"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal"
+                                    data-action="{{ path('app_product_delete', {'id': product.id}) }}"
+                                    data-token="{{ csrf_token('delete' ~ product.id) }}"
+                                    data-name="{{ product.name }}">
+                                Delete
+                            </button>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8" class="admin-empty">No products yet.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background:#141414; border:1px solid #232323; color:#e8e6e1;">
+                <div class="modal-header" style="border-bottom:1px solid #232323;">
+                    <h5 class="modal-title">Delete product</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete <strong id="deleteName"></strong>? This can't be undone.
+                </div>
+                <div class="modal-footer" style="border-top:1px solid #232323;">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <form method="post" id="deleteForm">
+                        <input type="hidden" name="_token" id="deleteToken">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.getElementById('deleteModal').addEventListener('show.bs.modal', function (event) {
+        const btn = event.relatedTarget;
+        document.getElementById('deleteForm').action = btn.dataset.action;
+        document.getElementById('deleteToken').value = btn.dataset.token;
+        document.getElementById('deleteName').textContent = btn.dataset.name;
+    });
+    </script>
+{% endblock %}

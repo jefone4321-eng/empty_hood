@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit category{% endblock %}
+
+{% block body %}
+    <div class="admin-page-header">
+        <h1>Edit Category</h1>
+        <a href="{{ path('app_category_index') }}" class="admin-btn-primary">Back to list</a>
+    </div>
+
+    {{ include('category/_form.html.twig', {'button_label': 'Save changes'}) }}
+{% endblock %}

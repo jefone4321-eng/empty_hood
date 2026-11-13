@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accounts{% endblock %}
+
+{% block body %}
+    <div class="admin-page-header">
+        <div>
+            <h1>Accounts</h1>
+            <p style="color:#888; margin:0;">Manage admin and staff accounts</p>
+        </div>
+        <a href="{{ path('app_user_new') }}" class="admin-btn-primary">
+            <i class="fa-solid fa-plus"></i> Add User
+        </a>
+    </div>
+
+    <div class="admin-table-wrapper">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.fullName }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                        {% if 'ROLE_ADMIN' in user.roles %}
+                            <span class="admin-badge admin-badge-admin">Admin</span>
+                        {% else %}
+                            <span class="admin-badge admin-badge-customer">Staff</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ user.isActive ? 'Active' : 'Disabled' }}</td>
+                    <td>{{ user.createdAt|date('M d, Y') }}</td>
+                    <td>
+                        <a href="{{ path('app_user_edit', {'id': user.id}) }}">Edit</a>
+                        {% if user != app.user %}
+                            <form method="post" action="{{ path('app_user_toggle', {'id': user.id}) }}" style="display:inline;">
+                                <input type="hidden" name="_token" value="{{ csrf_token('toggle' ~ user.id) }}">
+                                <button class="admin-delete-btn" style="color:#999;">{{ user.isActive ? 'Disable' : 'Enable' }}</button>
+                            </form>
+                            <form method="post" action="{{ path('app_user_delete', {'id': user.id}) }}" style="display:inline;" onsubmit="return confirm('Delete {{ user.fullName|e('js') }}? This cannot be undone.');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                                <button class="admin-delete-btn">Delete</button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="6" class="admin-empty">No users yet.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

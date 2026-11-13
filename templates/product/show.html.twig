@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block body %}
+    <div class="admin-page-header">
+        <h1>{{ product.name }}</h1>
+        <a href="{{ path('app_product_index') }}" class="admin-btn-primary">Back to list</a>
+    </div>
+
+    {% if product.image %}
+        <img src="{{ asset('uploads/products/' ~ product.image) }}" alt="{{ product.name }}" style="max-width:240px; border-radius:8px; margin-bottom:20px;">
+    {% endif %}
+
+    <div class="admin-table-wrapper">
+        <table class="admin-table">
+            <tbody>
+                <tr><th>Category</th><td>{{ product.category ? product.category.name : '-' }}</td></tr>
+                <tr><th>Price</th><td>₱{{ product.price|number_format(2) }}</td></tr>
+                <tr><th>Stock</th><td>{{ product.stock }}</td></tr>
+                <tr><th>SKU</th><td>{{ product.sku ?: '-' }}</td></tr>
+                <tr><th>Description</th><td>{{ product.description ?: '-' }}</td></tr>
+                <tr><th>Status</th><td>{{ product.isActive ? 'Active' : 'Hidden' }}</td></tr>
+                <tr><th>Added by</th><td>{{ product.createdBy ? product.createdBy.fullName : '-' }}</td></tr>
+                <tr><th>Created</th><td>{{ product.createdAt|date('M d, Y') }}</td></tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

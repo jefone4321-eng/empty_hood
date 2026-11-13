@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit product{% endblock %}
+
+{% block body %}
+    <div class="admin-page-header">
+        <h1>Edit Product</h1>
+        <a href="{{ path('app_product_index') }}" class="admin-btn-primary">Back to list</a>
+    </div>
+
+    {% if product.image %}
+        <p style="color:#888;">Current image:</p>
+        <img src="{{ asset('uploads/products/' ~ product.image) }}" class="admin-thumb" style="width:90px;height:110px;margin-bottom:16px;" alt="{{ product.name }}">
+    {% endif %}
+
+    {{ include('product/_form.html.twig', {'button_label': 'Save changes'}) }}
+{% endblock %}

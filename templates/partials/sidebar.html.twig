@@ -1,50 +1,45 @@
-{% set route = app.request.attributes.get('_route') %}
+{% set current = app.current_route|default('') %}
 
 <aside class="admin-sidebar">
-    <div class="admin-sidebar-brand">My App</div>
+    <div class="admin-sidebar-brand">Admin Dashboard</div>
 
-    <nav>
-        <ul>
+    <ul>
+        {% if is_granted('ROLE_ADMIN') %}
             <li>
-                <a href="{{ path('app_dashboard') }}" class="{{ route == 'app_dashboard' ? 'active' : '' }}">
-                    <i class="fa-solid fa-gauge-high"></i><span>Dashboard</span>
+                <a href="{{ path('app_dashboard') }}" class="{{ current == 'app_dashboard' ? 'active' : '' }}">
+                    <i class="fa-solid fa-gauge"></i> Dashboard
                 </a>
             </li>
+        {% endif %}
+
+        <li>
+            <a href="{{ path('app_product_index') }}" class="{{ current starts with 'app_product' ? 'active' : '' }}">
+                <i class="fa-solid fa-shirt"></i> Products
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('app_category_index') }}" class="{{ current starts with 'app_category' ? 'active' : '' }}">
+                <i class="fa-solid fa-tags"></i> Categories
+            </a>
+        </li>
+
+        {% if is_granted('ROLE_ADMIN') %}
             <li>
-                <a href="{{ path('app_products') }}" class="{{ route == 'app_products' ? 'active' : '' }}">
-                    <i class="fa-solid fa-shirt"></i><span>Products</span>
+                <a href="{{ path('app_user_index') }}" class="{{ current starts with 'app_user' ? 'active' : '' }}">
+                    <i class="fa-solid fa-users"></i> Accounts
                 </a>
             </li>
-            <li>
-                <a href="{{ path('app_accounts') }}" class="{{ route == 'app_accounts' ? 'active' : '' }}">
-                    <i class="fa-solid fa-users"></i><span>Accounts</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ path('app_reviews') }}" class="{{ route == 'app_reviews' ? 'active' : '' }}">
-                    <i class="fa-solid fa-star"></i><span>Reviews</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ path('app_inventory') }}" class="{{ route == 'app_inventory' ? 'active' : '' }}">
-                    <i class="fa-solid fa-boxes-stacked"></i><span>Inventory</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ path('app_orders') }}" class="{{ route == 'app_orders' ? 'active' : '' }}">
-                    <i class="fa-solid fa-chart-line"></i><span>Sales Report</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ path('app_messages') }}" class="{{ route == 'app_messages' ? 'active' : '' }}">
-                    <i class="fa-solid fa-envelope"></i><span>Messages</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ path('app_inventory_history') }}" class="{{ route == 'app_inventory_history' ? 'active' : '' }}">
-                    <i class="fa-solid fa-clock-rotate-left"></i><span>Inventory History</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+        {% endif %}
+
+        <li>
+            <a href="{{ path('app_profile') }}" class="{{ current starts with 'app_profile' ? 'active' : '' }}">
+                <i class="fa-solid fa-user"></i> My Profile
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('app_logout') }}">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </a>
+        </li>
+    </ul>
 </aside>

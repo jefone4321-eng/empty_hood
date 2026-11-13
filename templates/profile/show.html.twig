@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block body %}
+    <div class="admin-page-header">
+        <div>
+            <h1>My Profile</h1>
+            <p style="color:#888; margin:0;">Your account details</p>
+        </div>
+        <a href="{{ path('app_profile_password') }}" class="admin-btn-primary">
+            <i class="fa-solid fa-key"></i> Change Password
+        </a>
+    </div>
+
+    <div class="admin-table-wrapper" style="max-width:560px;">
+        <table class="admin-table">
+            <tbody>
+                <tr><th>Name</th><td>{{ user.fullName }}</td></tr>
+                <tr><th>Email</th><td>{{ user.userIdentifier }}</td></tr>
+                <tr>
+                    <th>Role</th>
+                    <td>
+                        {% if 'ROLE_ADMIN' in user.roles %}
+                            <span class="admin-badge admin-badge-admin">Admin</span>
+                        {% else %}
+                            <span class="admin-badge admin-badge-customer">Staff</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr><th>Status</th><td>{{ user.isActive ? 'Active' : 'Disabled' }}</td></tr>
+                <tr><th>Member since</th><td>{{ user.createdAt|date('M d, Y') }}</td></tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

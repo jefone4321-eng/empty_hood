@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New category{% endblock %}
+
+{% block body %}
+    <div class="admin-page-header">
+        <h1>Add Category</h1>
+        <a href="{{ path('app_category_index') }}" class="admin-btn-primary">Back to list</a>
+    </div>
+
+    {{ include('category/_form.html.twig', {'button_label': 'Create category'}) }}
+{% endblock %}
